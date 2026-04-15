@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🌌 CyberRoute Navigator</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto Mono', monospace;
+      background: #0a0a0a;
+      background-image: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: 
+        linear-gradient(45deg, transparent 30%, rgba(0,255,255,0.03) 50%, transparent 70%),
+        linear-gradient(-45deg, transparent 30%, rgba(255,0,255,0.03) 50%, transparent 70%);
+      animation: scan 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes scan {
+      0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+      100% { transform: translateX(100vw) translateY(100vh) rotate(45deg); }
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(15, 15, 25, 0.95);
+      backdrop-filter: blur(25px);
+      border: 1px solid rgba(0, 255, 255, 0.3);
+      border-radius: 24px;
+      box-shadow: 
+        0 0 50px rgba(0, 255, 255, 0.2),
+        0 0 100px rgba(255, 0, 255, 0.1),
+        inset 0 0 20px rgba(0, 255, 255, 0.05);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0,255,255,0.1), transparent);
+      animation: shimmer 3s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { left: -100%; }
+      100% { left: 100%; }
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1a0033 0%, #0a0a23 50%, #000011 100%);
+      border-bottom: 1px solid rgba(0, 255, 255, 0.5);
+      color: #00ffff;
+      padding: 50px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,0,255,0.1) 50%, transparent 70%);
+      animation: glow 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      0% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+
+    .header h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 15px;
+      text-shadow: 
+        0 0 10px #00ffff,
+        0 0 20px #00ffff,
+        0 0 30px #00ffff;
+      animation: neon-flicker 2s infinite alternate;
+    }
+
+    @keyframes neon-flicker {
+      0%, 18%, 22%, 25%, 53%, 57%, 100% { text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff; }
+      20%, 24%, 55% { text-shadow: none; }
+    }
+
+    .header p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      font-family: 'Roboto Mono', monospace;
+      text-shadow: 0 0 10px rgba(0,255,255,0.5);
+    }
+
+    .input-section {
+      padding: 60px 50px;
+      background: linear-gradient(180deg, rgba(20,20,40,0.9) 0%, rgba(10,10,25,0.95) 100%);
+    }
+
+    .input-group {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 35px;
+      margin-bottom: 35px;
+    }
+
+    .input-field {
+      position: relative;
+    }
+
+    .input-field label {
+      display: block;
+      margin-bottom: 15px;
+      font-weight: 500;
+      color: #00ff88;
+      font-size: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .input-field input {
+      width: 100%;
+      padding: 20px 25px 20px 60px;
+      border: 2px solid rgba(0, 255, 255, 0.3);
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-family: 'Roboto Mono', monospace;
+      background: rgba(10, 10, 20, 0.8);
+      color: #e0e0e0;
+      backdrop-filter: blur(15px);
+      transition: all 0.4s ease;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
+    }
+
+    .input-field input:focus {
+      outline: none;
+      border-color: #00ffff;
+      box-shadow: 
+        0 0 25px rgba(0,255,255,0.5),
+        inset 0 0 25px rgba(0,255,255,0.15);
+      background: rgba(0, 50, 50, 0.3);
+    }
+
+    .input-field input::placeholder {
+      color: rgba(255,255,255,0.4);
+    }
+
+    .input-field i {
+      position: absolute;
+      left: 22px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #ff00ff;
+      font-size: 1.3rem;
+      text-shadow: 0 0 12px rgba(255,0,255,0.6);
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      padding: 20px 40px;
+      border: none;
+      border-radius: 16px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      font-family: 'Orbitron', monospace;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      transition: left 0.6s;
+    }
+
+    .btn:hover::before {
+      left: 100%;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff00ff 0%, #00ffff 50%, #00ff88 100%);
+      color: #000;
+      box-shadow: 
+        0 0 35px rgba(255,0,255,0.6),
+        0 0 70px rgba(0,255,255,0.4);
+      font-weight: 700;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-5px) scale(1.05);
+      box-shadow: 
+        0 15px 45px rgba(255,0,255,0.8),
+        0 0 90px rgba(0,255,255,0.6);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: linear-gradient(135deg, rgba(255,0,255,0.2) 0%, rgba(0,255,255,0.2) 100%);
+      color: #e0e0e0;
+      border: 2px solid rgba(255,0,255,0.4);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 15px 40px rgba(255,0,255,0.5);
+      background: linear-gradient(135deg, rgba(255,0,255,0.4) 0%, rgba(0,255,255,0.4) 100%);
+    }
+
+    .error-msg {
+      background: rgba(255, 50, 50, 0.25);
+      color: #ff6666;
+      padding: 20px 25px;
+      border-radius: 16px;
+      margin-top: 25px;
+      border-left: 5px solid #ff4444;
+      border-right: 2px solid rgba(255,68,68,0.6);
+      backdrop-filter: blur(15px);
+      display: none;
+      box-shadow: 0 0 25px rgba(255,50,50,0.4);
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .success-msg {
+      background: rgba(0, 255, 100, 0.25);
+      color: #00ff88;
+      padding: 20px 25px;
+      border-radius: 16px;
+      margin-top: 25px;
+      border-left: 5px solid #00ff88;
+      border-right: 2px solid rgba(0,255,136,0.6);
+      backdrop-filter: blur(15px);
+      display: none;
+      box-shadow: 0 0 25px rgba(0,255,100,0.5);
+      font-family: 'Roboto Mono', monospace;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+      margin: 50px 0;
+      display: none;
+    }
+
+    .stat-card {
+      background: linear-gradient(145deg, rgba(20,20,40,0.9), rgba(10,10,25,0.95));
+      padding: 35px;
+      border-radius: 20px;
+      text-align: center;
+      border: 1px solid rgba(0,255,255,0.4);
+      backdrop-filter: blur(20px);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff00ff, #00ffff, #00ff88);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-10px) scale(1.03);
+      box-shadow: 
+        0 25px 60px rgba(0,255,255,0.4),
+        0 0 50px rgba(255,0,255,0.3);
+    }
+
+    .stat-value {
+      font-family: 'Orbitron', monospace;
+      font-size: 2.8rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #00ffff, #ff00ff, #00ff88);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .stat-label {
+      color: #88aaff;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 1rem;
+    }
+
+    .results-section {
+      padding: 0 50px 60px;
+    }
+
+    .table-container {
+      background: linear-gradient(145deg, rgba(15,15,30,0.98), rgba(5,5,15,0.98));
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(0,255,255,0.4);
+      box-shadow: 
+        0 25px 70px rgba(0,0,0,0.9),
+        0 0 60px rgba(0,255,255,0.3);
+      display: none;
+      backdrop-filter: blur(25px);
+    }
+
+    .table-header {
+      background: linear-gradient(135deg, #ff0080 0%, #00ffff 50%, #00ff88 100%);
+      color: #000;
+      padding: 35px 45px;
+      position: relative;
+    }
+
+    .table-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: rgba(255,255,255,0.4);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th {
+      padding: 30px 20px;
+      text-align: left;
+      font-weight: 600;
+      color: #00ffff;
+      background: rgba(0,50,100,0.7);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      border-bottom: 1px solid rgba(0,255,255,0.3);
+    }
+
+    td {
+      padding: 30px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      color: #e0e0e0;
+    }
+
+    tr:hover {
+      background: rgba(0,255,255,0.08);
+      box-shadow: inset 0 0 25px rgba(0,255,255,0.15);
+    }
+
+    .status-success { 
+      color: #00ff88; 
+      font-weight: 600;
+      text-shadow: 0 0 12px rgba(0,255,136,0.6);
+    }
+
+    .status-error { 
+      color: #ff6666; 
+      font-weight: 600;
+      text-shadow: 0 0 12px rgba(255,102,102,0.6);
+    }
+
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 60px;
+    }
+
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 4px solid rgba(0,255,255,0.2);
+      border-top: 4px solid #00ffff;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 30px;
+      box-shadow: 0 0 25px rgba(0,255,255,0.6);
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .input-group {
+        grid-template-columns: 1fr;
+      }
+      .header h1 { font-size: 2.3rem; }
+      .btn-group { flex-direction: column; align-items: center; }
+      .input-section { padding: 40px 25px; }
+      .results-section { padding: 0 25px 40px; }
+    }
+
+    .badge {
+      background: linear-gradient(135deg, #ff00ff, #00ffff);
+      color: #000;
+      padding: 10px 18px;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      font-family: 'Orbitron', monospace;
+      text-shadow: none;
+      box-shadow: 0 0 20px rgba(255,0,255,0.6);
+      display: inline-block;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1><i class="fas fa-route"></i> CyberRoute Navigator</h1>
+      <p>Navigate the digital highways • Real-time cyber routes & metrics</p>
+    </div>
+
+    <div class="input-section">
+      <div class="input-group">
+        <div class="input-field">
+          <label>🚀 Origin Node</label>
+          <input type="text" id="from" placeholder="e.g. Sumirap, Tangub, Philippines">
+           <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="input-field">
+          <label>Destination</label>
+          <input type="text" id="to" placeholder="e.g. Labuyo, Tangub, Phillipines">
+          <i class="fas fa-flag-checkered"></i>
+        </div>
+      </div>
+
+      <div class="btn-group">
+        <button class="btn btn-primary" id="getRouteBtn" onclick="getRoute()">
+          <i class="fas fa-search"></i> Find Route
+        </button>
+        <button class="btn btn-secondary" onclick="clearTable()">
+          <i class="fas fa-trash"></i> Clear All
+        </button>
+      </div>
+
+      <div id="error-msg" class="error-msg"></div>
+      <div id="success-msg" class="success-msg"></div>
+    </div>
+
+    <div class="stats-grid" id="stats-grid">
+      <div class="stat-card">
+        <div class="stat-value" id="total-runs">0</div>
+        <div class="stat-label">Total Routes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="avg-distance">0 mi</div>
+        <div class="stat-label">Avg Distance</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-value" id="avg-time">0h 0m</div>
+        <div class="stat-label">Avg Time</div>
+      </div>
+    </div>
+
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Calculating the best route...</p>
+    </div>
+
+    <div class="results-section">
+      <div class="table-container" id="results-table">
+        <div class="table-header">
+          <h3 style="margin: 0; display: inline-block; color: white;">
+            <i class="fas fa-table"></i> Route History
+          </h3>
+          <span id="run-count" style="float: right; opacity: 0.9; font-weight: 500;"></span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>From</th>
+              <th>To</th>
+              <th>Distance</th>
+              <th>Time</th>
+              <th>Fuel</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="table-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const API_KEY = 'Ca04kVNLR7kqwbv8v7qMJMPBVKAcPUey';
+    let runCount = 0;
+    let totalDistance = 0;
+    let totalTimeMinutes = 0;
+
+    // Enter key support
+    document.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('from').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') getRoute();
+      });
+      document.getElementById('to').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') getRoute();
+      });
+    });
+
+    async function getRoute() {
+      const from = document.getElementById('from').value.trim();
+      const to = document.getElementById('to').value.trim();
+      const errorMsg = document.getElementById('error-msg');
+      const successMsg = document.getElementById('success-msg');
+      const loading = document.getElementById('loading');
+      const getRouteBtn = document.getElementById('getRouteBtn');
+
+      // Hide messages
+      errorMsg.style.display = 'none';
+      successMsg.style.display = 'none';
+
+      if (!from || !to) {
+        showError('Please enter both starting location and destination.');
+        return;
+      }
+
+      // Show loading
+      getRouteBtn.disabled = true;
+      getRouteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+      loading.style.display = 'block';
+
+      try {
+        const encodedFrom = encodeURIComponent(from);
+        const encodedTo = encodeURIComponent(to);
+        const url = `https://www.mapquestapi.com/directions/v2/route?key=${API_KEY}&from=${encodedFrom}&to=${encodedTo}`;
+
+        const response = await fetch(url);
+        
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        
+        loading.style.display = 'none';
+
+        if (data.info.statuscode !== 0) {
+          showError(`No route found: ${data.info.messages ? data.info.messages[0] : 'Unknown error'}`);
+          return;
+        }
+
+        const route = data.route;
+        runCount++;
+        
+        // Update totals
+        totalDistance += route.distance || 0;
+        const timeParts = (route.formattedTime || '0:00').split(':');
+        totalTimeMinutes += parseInt(timeParts[0]) * 60 + parseInt(timeParts[1]);
+
+        // Add row and update UI
+        addTableRow(from, to, route);
+        updateStats();
+        
+        // Show success
+        successMsg.textContent = `Route ${runCount} added successfully!`;
+        successMsg.style.display = 'block';
+
+      } catch (error) {
+        loading.style.display = 'none';
+        console.error('Error:', error);
+        showError('Failed to fetch route. Please check your connection or try different locations.');
+      } finally {
+        // Reset button
+        getRouteBtn.disabled = false;
+        getRouteBtn.innerHTML = '<i class="fas fa-search"></i> Find Route';
+      }
+    }
+
+    function addTableRow(from, to, route) {
+      const tbody = document.getElementById('table-body');
+      const row = document.createElement('tr');
+      
+      const distance = route.distance ? route.distance.toFixed(2) + ' mi' : 'N/A';
+      const fuel = route.fuelUsed ? route.fuelUsed.toFixed(2) + ' gal' : 'N/A';
+      const statusClass = route.distance ? 'status-success' : 'status-error';
+      const statusText = route.distance ? 'Success' : 'No Route';
+
+      row.innerHTML = `
+        <td><span class="badge">${runCount}</span></td>
+        <td style="font-weight: 500;">${from}</td>
+        <td style="color: #3b82f6; font-weight: 500;">${to}</td>
+        <td><strong>${distance}</strong></td>
+        <td>${route.formattedTime || 'N/A'}</td>
+        <td>${fuel}</td>
+        <td><span class="${statusClass}"><i class="fas fa-check-circle"></i> ${statusText}</span></td>
+      `;
+      
+      tbody.insertBefore(row, tbody.firstChild); // Add to top
+      document.getElementById('results-table').style.display = 'block';
+      document.getElementById('stats-grid').style.display = 'grid';
+      updateRunCount();
+    }
+
+    function updateStats() {
+      document.getElementById('total-runs').textContent = runCount;
+      
+      if (runCount > 0) {
+        const avgDistance = (totalDistance / runCount).toFixed(1);
+        const avgTimeHours = Math.floor(totalTimeMinutes / runCount / 60);
+        const avgTimeMins = Math.floor(totalTimeMinutes / runCount % 60);
+        
+        document.getElementById('avg-distance').textContent = avgDistance + ' mi';
+        document.getElementById('avg-time').textContent = avgTimeHours + 'h ' + avgTimeMins + 'm';
+      }
+    }
+
+    function updateRunCount() {
+      document.getElementById('run-count').textContent = `${runCount} routes`;
+    }
+
+    function showError(message) {
+      const errorMsg = document.getElementById('error-msg');
+      errorMsg.textContent = message;
+      errorMsg.style.display = 'block';
+    }
+
+    function clearTable() {
+      runCount = 0;
+      totalDistance = 0;
+      totalTimeMinutes = 0;
+      document.getElementById('table-body').innerHTML = '';
+      document.getElementById('results-table').style.display = 'none';
+      document.getElementById('stats-grid').style.display = 'none';
+      document.getElementById('from').value = '';
+      document.getElementById('to').value = '';
+      document.getElementById('error-msg').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
